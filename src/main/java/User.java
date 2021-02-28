@@ -5,7 +5,7 @@ import java.util.List;
 
 public class User implements Runnable {
     public static List<DataOutputStream> outs;
-    private final DataInputStream in;
+    private DataInputStream in;
 
     public User(DataInputStream in) {
         this.in = in;
