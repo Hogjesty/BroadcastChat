@@ -17,8 +17,10 @@ public class Client {
             System.out.println("Hello, " + name + "!\nYou are connecting to " + address + ":" + port);
             Socket socket = new Socket(ipAddress, port);
             System.out.println("Connection established!");
-            Thread input = new Thread(new Input(new DataInputStream(socket.getInputStream())));
-            Thread output = new Thread(new Output(new DataOutputStream(socket.getOutputStream())));
+
+            Thread input = new Thread(new Input(socket.getInputStream()));
+            Thread output = new Thread(new Output(socket.getOutputStream()));
+
             input.start();
             output.start();
         } catch (IOException e) {
@@ -28,10 +30,10 @@ public class Client {
     }
 
     private static class Input implements Runnable {
-        private DataInputStream in;
+        private final DataInputStream in;
 
-        Input(DataInputStream in) {
-            this.in = in;
+        Input(InputStream in) {
+            this.in = new DataInputStream(in);
         }
 
         @Override
@@ -56,10 +58,10 @@ public class Client {
     }
 
     private static class Output implements Runnable {
-        private DataOutputStream out;
+        private final DataOutputStream out;
 
-        Output(DataOutputStream out) {
-            this.out = out;
+        Output(OutputStream out) {
+            this.out = new DataOutputStream(out);
         }
 
         @Override
